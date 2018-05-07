@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowTranslucentStatus" tools:ignore="NewApi">false</item>
+        <item name="android:windowTranslucentNavigation" tools:ignore="NewApi">false</item>
+        <item name="android:statusBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/bg_shape_splash</item>
+    </style>
+
+    <style name="main_tab">
+        <item name="android:layout_width">@dimen/d0</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">@dimen/d5</item>
+        <item name="tmv_text_color_normal">@color/text_gray</item>
+        <item name="tmv_text_color_selected">@color/color_bg_theme</item>
+        <item name="tmv_text_size">@dimen/s10</item>
+        <item name="tmv_text_height">@dimen/d15</item>
+        <item name="tmv_icon_width">@dimen/d35</item>
+        <item name="tmv_icon_height">@dimen/d35</item>
+    </style>
+
+
+</resources>

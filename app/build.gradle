@@ -1,0 +1,88 @@
+apply plugin: rootProject.ext.plugin.com_android_application
+
+android {
+
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+
+        ndk {
+            // abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            // abiFilters 'x86','x86_64','armeabi'
+            abiFilters 'armeabi', 'x86'
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+    buildTypes {
+        release {
+            buildConfigField "boolean", "LEO_DEBUG", "false" // 不显示Log
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            buildConfigField "boolean", "LEO_DEBUG", "true" // 显示Log
+            minifyEnabled false
+            signingConfig signingConfigs.debug  // 编译加速
+            ext.alwaysUpdateBuildId = false  // 编译加速
+            buildConfigField "long", "BUILD_TIMESTAMP", "000000000"  // 编译加速
+        }
+    }
+    lintOptions {
+        disable "ResourceType"
+        checkReleaseBuilds false
+        abortOnError false
+    }
+    if (project.hasProperty("devBuild")) {  // 编译加速
+        aaptOptions.cruncherEnabled = false  // 编译加速
+    }
+    dexOptions {          // 编译加速
+        javaMaxHeapSize "4g"
+        // incremental false
+    }
+    flavorDimensions "default"  // 编译加速
+    productFlavors {  // 编译加速
+        development {  // 编译加速
+            minSdkVersion 14  // 编译加速
+            dimension "default"  // 编译加速
+            resConfigs("en", "xxhdpi")  // 编译加速
+        }
+        production {  // 编译加速
+            dimension "default"  // 编译加速
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':permission_core')
+    implementation project(':permission_annotation')
+    annotationProcessor project(':permission_processor')
+    // 原生
+    implementation rootProject.ext.dependencies["support_appcompat_v7"]
+    implementation rootProject.ext.dependencies["support_design"]
+    implementation rootProject.ext.dependencies["support_recyclerview_v7"]
+    implementation rootProject.ext.dependencies["support_multidex"]
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

@@ -1,0 +1,47 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <com.quasar.demo.widget.TabMenuLayout
+        android:id="@+id/main_tabmenu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/d50"
+        android:background="@color/color_white"
+        android:orientation="horizontal"
+        app:tml_click_scale="true">
+
+        <com.quasar.demo.widget.TabMenuView
+            style="@style/main_tab"
+            app:tmv_icon_normal="@mipmap/ic_launcher"
+            app:tmv_icon_selected="@mipmap/ic_launcher_round"
+            app:tmv_text="菜单1" />
+
+        <com.quasar.demo.widget.TabMenuView
+            style="@style/main_tab"
+            app:tmv_icon_normal="@mipmap/ic_launcher"
+            app:tmv_icon_selected="@mipmap/ic_launcher_round"
+            app:tmv_text="菜单2" />
+
+        <com.quasar.demo.widget.TabMenuView
+            style="@style/main_tab"
+            app:tmv_icon_normal="@mipmap/ic_launcher"
+            app:tmv_icon_selected="@mipmap/ic_launcher_round"
+            app:tmv_text="菜单3" />
+
+        <com.quasar.demo.widget.TabMenuView
+            style="@style/main_tab"
+            app:tmv_icon_normal="@mipmap/ic_launcher"
+            app:tmv_icon_selected="@mipmap/ic_launcher_round"
+            app:tmv_text="菜单4" />
+
+    </com.quasar.demo.widget.TabMenuLayout>
+
+</LinearLayout>

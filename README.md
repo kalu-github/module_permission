@@ -37,6 +37,12 @@ PermissionManager.get(HomeFragment.this)
                         }
                     })
                     .request();
+                    
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    PermissionManager.onRequestPermissionsResult(SplashActivity.this, requestCode, grantResults);
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
 ```
 
 ```
@@ -49,6 +55,12 @@ PermissionManager.get(SplashActivity.this)
                  .setPageType(IntentType.PLATFRRM_SETTING)
                  .setCode(BaseConstant.PERMISSION_SD)
                  .request();
+                 
+@Override
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    PermissionManager.onRequestPermissionsResult(SplashActivity.this, requestCode, grantResults);
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
 
 @PermissionSucc(BaseConstant.PERMISSION_SD)
 public void cardSucc(int code) {

@@ -6,11 +6,11 @@ android 6.0 运行时权限管理,
 1.普通回调监听方式：
 
 PermissionManager.get(HomeFragment.this)
-                  .setForce(true)
-                  .setPermission(Manifest.permission.CAMERA)
-                  .setCode(BaseConstant.PERMISSION_CAMERA)
-                  .setPageType(IntentType.PLATFRRM_SETTING)
-                  .setOnPermissionChangeListener(new OnPermissionChangeListener() {
+                 .setForce(true)
+                 .setPermission(Manifest.permission.CAMERA)
+                 .setCode(BaseConstant.PERMISSION_CAMERA)
+                 .setPageType(IntentType.PLATFRRM_SETTING)
+                 .setOnPermissionChangeListener(new OnPermissionChangeListener() {
                   
                        @Override
                        public void onSucc(int code) {
@@ -43,12 +43,12 @@ PermissionManager.get(HomeFragment.this)
 2.编译时注解方式:
 
 PermissionManager.get(SplashActivity.this)
-                .setForce(true)
-                .setUnderM(true)
-                .setPermission(Manifest.permission.RECORD_AUDIO)
-                .setPageType(IntentType.PLATFRRM_SETTING)
-                .setCode(BaseConstant.PERMISSION_SD)
-                .request();
+                 .setForce(true)
+                 .setUnderM(true)
+                 .setPermission(Manifest.permission.RECORD_AUDIO)
+                 .setPageType(IntentType.PLATFRRM_SETTING)
+                 .setCode(BaseConstant.PERMISSION_SD)
+                 .request();
 
 @PermissionSucc(BaseConstant.PERMISSION_SD)
 public void cardSucc(int code) {

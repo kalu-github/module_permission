@@ -6,16 +6,17 @@ android 6.0 运行时权限管理,
 1.普通回调监听方式：
 
 PermissionManager.get(HomeFragment.this)
-                    .setForce(true)
-                    .setPermission(Manifest.permission.CAMERA)
-                    .setCode(BaseConstant.PERMISSION_CAMERA)
-                    .setPageType(IntentType.PLATFRRM_SETTING)
-                    .setOnPermissionChangeListener(new OnPermissionChangeListener() {
-                        @Override
-                        public void onSucc(int code) {
+                  .setForce(true)
+                  .setPermission(Manifest.permission.CAMERA)
+                  .setCode(BaseConstant.PERMISSION_CAMERA)
+                  .setPageType(IntentType.PLATFRRM_SETTING)
+                  .setOnPermissionChangeListener(new OnPermissionChangeListener() {
+                  
+                       @Override
+                       public void onSucc(int code) {
                             Log.e("dsds", "cameraSucc ==> code = " + code);
                             Toast.makeText(getContext(), "获取相机权限成功", Toast.LENGTH_SHORT).show();
-                        }
+                       }
 
                         @Override
                         public void onFail(int code) {

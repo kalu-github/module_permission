@@ -50,27 +50,27 @@ PermissionManager.get(SplashActivity.this)
                 .request();
 
 @PermissionSucc(BaseConstant.PERMISSION_SD)
-    public void cardSucc(int code) {
-        goThenKill(MainActivity.class);
-        Log.e("dsds", "onSucc ==> code = " + code);
-        Toast.makeText(getApplicationContext(), "获取录音权限成功", Toast.LENGTH_SHORT).show();
-    }
+public void cardSucc(int code) {
+    goThenKill(MainActivity.class);
+    Log.e("dsds", "onSucc ==> code = " + code);
+    Toast.makeText(getApplicationContext(), "获取录音权限成功", Toast.LENGTH_SHORT).show();
+}
 
-    @PermissionFail(BaseConstant.PERMISSION_SD)
-    public void cardFail(int code) {
-        Toast.makeText(getApplicationContext(), "获取录音权限失败", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onFail ==> code = " + code);
-    }
+@PermissionFail(BaseConstant.PERMISSION_SD)
+public void cardFail(int code) {
+    Toast.makeText(getApplicationContext(), "获取录音权限失败", Toast.LENGTH_SHORT).show();
+    Log.e("dsds", "onFail ==> code = " + code);
+}
 
-    @PermissionAgain(BaseConstant.PERMISSION_SD)
-    public void cardAgainNormal(int code) {
-        Toast.makeText(getApplicationContext(), "获取录音权限, 弹窗", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onAgain ==> code = " + code);
-    }
+@PermissionAgain(BaseConstant.PERMISSION_SD)
+public void cardAgainNormal(int code) {
+    Toast.makeText(getApplicationContext(), "获取录音权限, 弹窗", Toast.LENGTH_SHORT).show();
+    Log.e("dsds", "onAgain ==> code = " + code);
+}
 
-    @PermissionDenied(BaseConstant.PERMISSION_SD)
-    public void cardAgainRefuse(int code, final Intent intent) {
-        Toast.makeText(getApplicationContext(), "获取录音权限, 拒绝", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onDenied ==> code = " + code);
-    }
+@PermissionDenied(BaseConstant.PERMISSION_SD)
+public void cardAgainRefuse(int code, final Intent intent) {
+    Toast.makeText(getApplicationContext(), "获取录音权限, 拒绝", Toast.LENGTH_SHORT).show();
+    Log.e("dsds", "onDenied ==> code = " + code);
+}
 ```

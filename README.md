@@ -1,6 +1,7 @@
 android 6.0 运行时权限管理, 
 编译时注解, 普通监听回调
 
+![image](https://github.com/153437803/PermissionManager/blob/master/image_20180510214150.gif ) 
 
 ```
 1.普通回调监听方式：

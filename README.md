@@ -7,35 +7,33 @@ android 6.0 运行时权限管理,
 
 ```
 1.普通回调监听方式：
-
 PermissionManager.get(HomeFragment.this)
-                 .setForce(true)
-                 .setPermission(Manifest.permission.CAMERA)
-                 .setCode(BaseConstant.PERMISSION_CAMERA)
-                 .setPageType(IntentType.PLATFRRM_SETTING)
-                 .setOnPermissionChangeListener(new OnPermissionChangeListener() {
-                  
-                       @Override
-                       public void onSucc(int code) {
-                            Log.e("dsds", "cameraSucc ==> code = " + code);
+                    .setForce(true)
+                    .setPermissionName(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                    .setRequestCode(BaseConstant.PERMISSION_CAMERA)
+                    .setPageType(IntentType.GOOGLE_SETTING)
+                    .setOnPermissionChangeListener(new OnPermissionChangeListener() {
+                        @Override
+                        public void onSucc(int code, List<String> list) {
+                            Log.e("dsds", "cameraSucc ==> code = " + code + ", name = " + list.toString());
                             Toast.makeText(getContext(), "获取相机权限成功", Toast.LENGTH_SHORT).show();
-                       }
+                        }
 
                         @Override
-                        public void onFail(int code) {
-                            Log.e("dsds", "cameraFail ==> code = " + code);
+                        public void onFail(int code, List<String> list) {
+                            Log.e("dsds", "cameraFail ==> code = " + code + ", name = " + list.toString());
                             Toast.makeText(getContext(), "获取相机权限失败", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onAgain(int code) {
-                            Log.e("dsds", "onAgain ==> code = " + code);
+                        public void onAgain(int code, List<String> list) {
+                            Log.e("dsds", "onAgain ==> code = " + code + ", name = " + list.toString());
                             Toast.makeText(getContext(), "获取相机权限, 弹窗", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
-                        public void onDenied(int code, Intent intent) {
-                            Log.e("dsds", "onDenied ==> code = " + code);
+                        public void onDenied(int code, List<String> list, Intent intent) {
+                            Log.e("dsds", "onDenied ==> code = " + code + ", name = " + list.toString() + ", action = " + intent.getAction());
                             Toast.makeText(getContext(), "获取相机权限, 拒绝", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -51,42 +49,41 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 ```
 2.编译时注解方式:
 
-PermissionManager.get(SplashActivity.this)
-                 .setForce(true)
-                 .setUnderM(true)
-                 .setPermission(Manifest.permission.RECORD_AUDIO)
-                 .setPageType(IntentType.PLATFRRM_SETTING)
-                 .setCode(BaseConstant.PERMISSION_SD)
-                 .request();
+        PermissionManager.get(SplashActivity.this)
+                .setForce(true)
+                .setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .setPageType(IntentType.SYSTEM_SETTING)
+                .setRequestCode(BaseConstant.PERMISSION_SD)
+                .request();
                  
-@Override
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    PermissionManager.onRequestPermissionsResult(SplashActivity.this, requestCode, grantResults);
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-}
+    @PermissionSucc(BaseConstant.PERMISSION_SD)
+    public void onSucc(int code, List<String> list) {
+        goThenKill(MainActivity.class);
+        Log.e("dsds", "onSucc ==> code = " + code + ", list = " + list.toString());
+        Toast.makeText(getApplicationContext(), "获取存储权限成功", Toast.LENGTH_SHORT).show();
+    }
 
-@PermissionSucc(BaseConstant.PERMISSION_SD)
-public void cardSucc(int code) {
-    goThenKill(MainActivity.class);
-    Log.e("dsds", "onSucc ==> code = " + code);
-    Toast.makeText(getApplicationContext(), "获取录音权限成功", Toast.LENGTH_SHORT).show();
-}
+    @PermissionFail(BaseConstant.PERMISSION_SD)
+    public void onFail(int code, List<String> list) {
+        Toast.makeText(getApplicationContext(), "获取存储权限失败", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onFail ==> code = " + code + ", list = " + list.toString());
+    }
 
-@PermissionFail(BaseConstant.PERMISSION_SD)
-public void cardFail(int code) {
-    Toast.makeText(getApplicationContext(), "获取录音权限失败", Toast.LENGTH_SHORT).show();
-    Log.e("dsds", "onFail ==> code = " + code);
-}
+    @PermissionAgain(BaseConstant.PERMISSION_SD)
+    public void onAgain(int code, List<String> list) {
+        Toast.makeText(getApplicationContext(), "获取存储权限, 弹窗", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onAgain ==> code = " + code + ", list = " + list.toString());
+    }
 
-@PermissionAgain(BaseConstant.PERMISSION_SD)
-public void cardAgainNormal(int code) {
-    Toast.makeText(getApplicationContext(), "获取录音权限, 弹窗", Toast.LENGTH_SHORT).show();
-    Log.e("dsds", "onAgain ==> code = " + code);
-}
+    @PermissionDenied(BaseConstant.PERMISSION_SD)
+    public void onDenied(int code, List<String> list, final Intent intent) {
+        Toast.makeText(getApplicationContext(), "获取存储权限, 拒绝", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onDenied ==> code = " + code + ", list = " + list.toString() + ", action = " + intent.getAction());
+    }
 
-@PermissionDenied(BaseConstant.PERMISSION_SD)
-public void cardAgainRefuse(int code, final Intent intent) {
-    Toast.makeText(getApplicationContext(), "获取录音权限, 拒绝", Toast.LENGTH_SHORT).show();
-    Log.e("dsds", "onDenied ==> code = " + code);
-}
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        PermissionManager.onRequestPermissionsResult(SplashActivity.this, requestCode, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 ```

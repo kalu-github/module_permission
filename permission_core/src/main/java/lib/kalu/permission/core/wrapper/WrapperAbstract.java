@@ -10,6 +10,10 @@ import lib.kalu.permission.core.intent.IntentType;
 import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 
+/**
+ * description: 当前类描述信息
+ * created by kalu on 2018/5/13 1:08
+ */
 public abstract class WrapperAbstract implements WrapperImp {
 
     private final List<String> list = Collections.synchronizedList(new ArrayList<>());

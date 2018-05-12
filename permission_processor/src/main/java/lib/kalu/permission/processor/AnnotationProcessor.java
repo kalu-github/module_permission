@@ -116,28 +116,28 @@ public final class AnnotationProcessor extends AbstractProcessor {
             String methodName = method.getSimpleName().toString();
             if (annotation instanceof PermissionSucc) {
                 PermissionSucc succ = (PermissionSucc) annotation;
-                final PermissionModel model = new PermissionModel();
+                final AnnotationModel model = new AnnotationModel();
                 final int code = succ.value();
                 model.setCode(code);
                 model.setMethod(methodName);
                 info.succ[0] = model;
             } else if (annotation instanceof PermissionFail) {
                 PermissionFail fail = (PermissionFail) annotation;
-                final PermissionModel model = new PermissionModel();
+                final AnnotationModel model = new AnnotationModel();
                 final int code = fail.value();
                 model.setCode(code);
                 model.setMethod(methodName);
                 info.fail[0] = model;
             } else if (annotation instanceof PermissionAgain) {
                 PermissionAgain again = (PermissionAgain) annotation;
-                final PermissionModel model = new PermissionModel();
+                final AnnotationModel model = new AnnotationModel();
                 final int code = again.value();
                 model.setCode(code);
                 model.setMethod(methodName);
                 info.again[0] = model;
             } else if (annotation instanceof PermissionDenied) {
                 PermissionDenied denied = (PermissionDenied) annotation;
-                final PermissionModel model = new PermissionModel();
+                final AnnotationModel model = new AnnotationModel();
                 final int code = denied.value();
                 model.setCode(code);
                 model.setMethod(methodName);

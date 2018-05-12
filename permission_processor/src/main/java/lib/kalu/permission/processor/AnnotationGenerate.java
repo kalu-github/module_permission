@@ -15,10 +15,10 @@ final class AnnotationGenerate {
     private final TypeElement element;
     private final String proxyName;
 
-    final PermissionModel[] succ = new PermissionModel[1];
-    final PermissionModel[] fail = new PermissionModel[1];
-    final PermissionModel[] again = new PermissionModel[1];
-    final PermissionModel[] denied = new PermissionModel[1];
+    final AnnotationModel[] succ = new AnnotationModel[1];
+    final AnnotationModel[] fail = new AnnotationModel[1];
+    final AnnotationModel[] again = new AnnotationModel[1];
+    final AnnotationModel[] denied = new AnnotationModel[1];
 
     AnnotationGenerate(Elements elements, TypeElement typeElement) {
         this.element = typeElement;
@@ -64,7 +64,7 @@ final class AnnotationGenerate {
 
         if (null == builder) return;
 
-        final PermissionModel model = succ[0];
+        final AnnotationModel model = succ[0];
         if (null == model) return;
 
         builder.append("@Override\n").append("public void onSucc(").append(element.getSimpleName())
@@ -81,7 +81,7 @@ final class AnnotationGenerate {
 
         if (null == builder) return;
 
-        final PermissionModel model = fail[0];
+        final AnnotationModel model = fail[0];
         if (null == model) return;
 
         builder.append("@Override\n").append("public void onFail(").append(element.getSimpleName())
@@ -98,7 +98,7 @@ final class AnnotationGenerate {
 
         if (null == builder) return;
 
-        final PermissionModel model = again[0];
+        final AnnotationModel model = again[0];
         if (null == model) return;
 
         builder.append("@Override\n").append("public void onAgain(").append(element.getSimpleName())
@@ -115,7 +115,7 @@ final class AnnotationGenerate {
 
         if (null == builder) return;
 
-        final PermissionModel model = denied[0];
+        final AnnotationModel model = denied[0];
         if (null == model) return;
 
         builder.append("@Override\n").append("public void onDenied(").append(element.getSimpleName())

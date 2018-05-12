@@ -10,6 +10,10 @@ import java.util.List;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 import lib.kalu.permission.core.support.SupportCheck;
 
+/**
+ * description: 当前类描述信息
+ * created by kalu on 2018/5/13 1:08
+ */
 public final class WrapperActivity extends WrapperAbstract {
 
     private final Activity activity;

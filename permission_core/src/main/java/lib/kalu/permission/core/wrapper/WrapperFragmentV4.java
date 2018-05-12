@@ -8,6 +8,10 @@ import java.util.List;
 
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 
+/**
+ * description: 当前类描述信息
+ * created by kalu on 2018/5/13 1:08
+ */
 public final class WrapperFragmentV4 extends WrapperAbstract {
 
     private final android.support.v4.app.Fragment mFragment;

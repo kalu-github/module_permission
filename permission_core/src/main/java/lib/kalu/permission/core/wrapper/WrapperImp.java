@@ -10,6 +10,10 @@ import lib.kalu.permission.core.intent.IntentType;
 import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 
+/**
+ * description: 接口方法
+ * created by kalu on 2018/5/13 1:03
+ */
 public interface WrapperImp {
 
     int TARGET_ACTIVITY = 1;

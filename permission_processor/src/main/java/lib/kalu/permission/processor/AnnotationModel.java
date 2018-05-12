@@ -1,6 +1,10 @@
 package lib.kalu.permission.processor;
 
-final class PermissionModel {
+/**
+ * description: 当前类描述信息
+ * created by kalu on 2018/5/13 1:03
+ */
+final class AnnotationModel {
 
     private String method;
     private int code;

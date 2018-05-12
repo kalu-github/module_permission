@@ -30,13 +30,10 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import lib.kalu.permission.core.platform.PlatformManager;
 import lib.kalu.permission.core.wrapper.WrapperImp;
-import lib.kalu.permission.core.wrapper.WrapperPermission;
 
 import static android.content.Context.SENSOR_SERVICE;
 import static android.content.Context.TELEPHONY_SERVICE;
@@ -171,7 +168,7 @@ public final class SupportCheck {
         Cursor cursor = activity.getContentResolver().query(Uri.parse("content://sms/"), null, null, null, null);
         if (null == cursor) return false;
 
-        if (isForceManufacturer()) {
+        if (PlatformManager.isForceManufacturer()) {
             if (isNumberIndexInfoIsNull(cursor, cursor.getColumnIndex(Telephony.Sms.DATE))) {
                 cursor.close();
                 return false;
@@ -283,7 +280,7 @@ public final class SupportCheck {
                         ("content://call_log/calls"), null, null,
                 null, null);
         if (cursor != null) {
-            if (isForceManufacturer()) {
+            if (PlatformManager.isForceManufacturer()) {
                 if (isNumberIndexInfoIsNull(cursor, cursor.getColumnIndex(CallLog.Calls.NUMBER))) {
                     cursor.close();
                     return false;
@@ -339,7 +336,7 @@ public final class SupportCheck {
         final Cursor cursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         if (null == cursor) return false;
 
-        if (isForceManufacturer()) {
+        if (PlatformManager.isForceManufacturer()) {
             if (isNumberIndexInfoIsNull(cursor, cursor.getColumnIndex(ContactsContract.CommonDataKinds
                     .Phone.NUMBER))) {
                 cursor.close();
@@ -359,34 +356,5 @@ public final class SupportCheck {
         } else {
             return true;
         }
-    }
-
-    /**********************************************************************************************/
-
-    private static final HashSet<String> forceSet = new HashSet<>(Arrays.asList(PlatformManager.MANUFACTURER_XIAOMI, PlatformManager.MANUFACTURER_MEIZU));
-    private static final HashSet<String> underMSet = new HashSet<>(Arrays.asList(PlatformManager.MANUFACTURER_XIAOMI, PlatformManager.MANUFACTURER_MEIZU, PlatformManager.MANUFACTURER_OPPO));
-
-    public static boolean isForceManufacturer() {
-        return forceSet.contains(PlatformManager.getManufacturer());
-    }
-
-    public static boolean isUnderMHasPermissionRequestManufacturer() {
-        return underMSet.contains(PlatformManager.getManufacturer());
-    }
-
-    public static boolean isLocationMustNeedGpsManufacturer() {
-        return PlatformManager.getManufacturer().equalsIgnoreCase(PlatformManager.MANUFACTURER_OPPO);
-    }
-
-    public static boolean isUnderMNeedChecked(boolean isUnderMNeedChecked) {
-        return isUnderMHasPermissionRequestManufacturer() && isUnderMNeedChecked && isAndroidL();
-    }
-
-    public static Set<String> getForceSet() {
-        return forceSet;
-    }
-
-    public static Set<String> getUnderMSet() {
-        return underMSet;
     }
 }

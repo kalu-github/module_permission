@@ -62,6 +62,11 @@ public final class WrapperFragmentV4 extends WrapperAbstract {
             api1.onAgain(requestCode, list2);
         }
 
+        final OnPermissionChangeListener api2= getPermissionChangeListener();
+        if (null != api2 && list2.size() > 0) {
+            api2.onAgain(requestCode, list2);
+        }
+
         mFragment.requestPermissions(names, requestCode);
     }
 }

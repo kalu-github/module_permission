@@ -64,6 +64,11 @@ public final class WrapperActivity extends WrapperAbstract {
             api1.onAgain(requestCode, list2);
         }
 
+        final OnPermissionChangeListener api2= getPermissionChangeListener();
+        if (null != api2 && list2.size() > 0) {
+            api2.onAgain(requestCode, list2);
+        }
+
         ActivityCompat.requestPermissions(activity, names, requestCode);
     }
 }

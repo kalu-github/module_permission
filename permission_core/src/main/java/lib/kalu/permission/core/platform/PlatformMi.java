@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
  * Created by joker on 2017/8/4.
  */
 
-public class PlatformMi extends PlatformGoogle {
+public class PlatformMi implements PlatformImp {
     private final String PKG = "com.miui.securitycenter";
     // manager
     private final String MIUI8_MANAGER_OUT_CLS = "com.miui.securityscan.MainActivity";
@@ -27,8 +27,10 @@ public class PlatformMi extends PlatformGoogle {
     // xiaomi permissions setting page
     private final String MIUI8_OUT_CLS = "com.android.settings.applications.InstalledAppDetailsTop";
 
+    final Activity activity;
+
     public PlatformMi(Activity activity) {
-        super(activity);
+        this.activity = activity;
     }
 
     private static String getSystemProperty() {
@@ -64,7 +66,7 @@ public class PlatformMi extends PlatformGoogle {
             intent.putExtra("extra_pkgname", activity.getPackageName());
         } else {
             // miui 8
-            intent.putExtra(PACK_TAG, activity.getPackageName());
+            intent.putExtra(PACKAGE, activity.getPackageName());
             ComponentName comp = new ComponentName(PKG, MIUI8_MANAGER_OUT_CLS);
             intent.setComponent(comp);
         }

@@ -9,46 +9,46 @@ import android.util.Log;
  * description: 权限跳转页面 - 平台管理
  * created by kalu on 2017/12/19 22:15
  */
-public class PlatformManager {
+public final class PlatformManager {
 
-    static final String MANUFACTURER_HUAWEI = "huawei";
-    static final String MANUFACTURER_XIAOMI = "xiaomi";
-    static final String MANUFACTURER_OPPO = "oppo";
-    static final String MANUFACTURER_VIVO = "vivo";
-    static final String MANUFACTURER_MEIZU = "meizu";
+    public static final String MANUFACTURER_HUAWEI = "huawei";
+    public static final String MANUFACTURER_XIAOMI = "xiaomi";
+    public static final String MANUFACTURER_OPPO = "oppo";
+    public static final String MANUFACTURER_VIVO = "vivo";
+    public static final String MANUFACTURER_MEIZU = "meizu";
 
     public static String getManufacturer() {
         return Build.MANUFACTURER;
     }
 
-    public static Intent getPlatformSetting(Activity activity) {
+    public static Intent getIntent(boolean google, Activity activity) {
 
-        PlatformGoogle platformSimple;
-        try {
-            if (MANUFACTURER_HUAWEI.equalsIgnoreCase(Build.MANUFACTURER)) {
-                platformSimple = new PlatformHuawei(activity);
-            } else if (MANUFACTURER_OPPO.equalsIgnoreCase(Build.MANUFACTURER)) {
-                platformSimple = new PlatformOppo(activity);
-            } else if (MANUFACTURER_VIVO.equalsIgnoreCase(Build.MANUFACTURER)) {
-                platformSimple = new PlatformVivo(activity);
-            } else if (MANUFACTURER_XIAOMI.equalsIgnoreCase(Build.MANUFACTURER)) {
-                platformSimple = new PlatformMi(activity);
-            } else if (MANUFACTURER_MEIZU.equalsIgnoreCase(Build.MANUFACTURER)) {
-                platformSimple = new PlatformMeizu(activity);
-            } else {
+        if(google){
+            return new PlatformGoogle(activity).settingIntent();
+        }else{
+            PlatformImp platformSimple;
+            try {
+                if (MANUFACTURER_HUAWEI.equalsIgnoreCase(Build.MANUFACTURER)) {
+                    platformSimple = new PlatformHuawei(activity);
+                } else if (MANUFACTURER_OPPO.equalsIgnoreCase(Build.MANUFACTURER)) {
+                    platformSimple = new PlatformOppo(activity);
+                } else if (MANUFACTURER_VIVO.equalsIgnoreCase(Build.MANUFACTURER)) {
+                    platformSimple = new PlatformVivo(activity);
+                } else if (MANUFACTURER_XIAOMI.equalsIgnoreCase(Build.MANUFACTURER)) {
+                    platformSimple = new PlatformMi(activity);
+                } else if (MANUFACTURER_MEIZU.equalsIgnoreCase(Build.MANUFACTURER)) {
+                    platformSimple = new PlatformMeizu(activity);
+                } else {
+                    platformSimple = new PlatformGoogle(activity);
+                }
+
+                return platformSimple.settingIntent();
+            } catch (Exception e) {
+                Log.e("PlatformManager", "手机品牌为：" + Build.MANUFACTURER + "异常抛出，：" + e.getMessage(), e);
                 platformSimple = new PlatformGoogle(activity);
+                return platformSimple.settingIntent();
             }
-
-            return platformSimple.settingIntent();
-        } catch (Exception e) {
-            Log.e("PlatformManager", "手机品牌为：" + Build.MANUFACTURER + "异常抛出，：" + e.getMessage(), e);
-            platformSimple = new PlatformGoogle(activity);
-            return platformSimple.settingIntent();
         }
-    }
-
-    public static Intent getAndroidSetting(Activity activity) {
-        return new PlatformGoogle(activity).settingIntent();
     }
 
     public static boolean isXIAOMI() {

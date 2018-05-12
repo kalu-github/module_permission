@@ -8,25 +8,28 @@ import android.content.Intent;
  * support:
  * 1.Y55A androi:6.0.1/Funtouch 2.6
  * 2.Xplay5A android: 5.1.1/Funtouch 3
- *
+ * <p>
  * manager home page, or {@link PlatformGoogle#settingIntent()}
- *
+ * <p>
  * Created by joker on 2017/8/4.
  */
 
-public class PlatformVivo extends PlatformGoogle {
+public class PlatformVivo implements PlatformImp {
     private final String MAIN_CLS = "com.iqoo.secure.MainActivity";
     private final String PKG = "com.iqoo.secure";
 
+
+    final Activity activity;
+
     public PlatformVivo(Activity activity) {
-        super(activity);
+        this.activity = activity;
     }
 
     @Override
     public Intent settingIntent() {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(PACK_TAG, activity.getPackageName());
+        intent.putExtra(PACKAGE, activity.getPackageName());
         ComponentName comp = new ComponentName(PKG, MAIN_CLS);
 
         // starting Intent { flg=0x10000000 cmp=com.iqoo.secure/.safeguard.PurviewTabActivity (has

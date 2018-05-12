@@ -3,18 +3,20 @@ package lib.kalu.permission.core;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import lib.kalu.permission.core.listener.OnPermissionChangeListener;
-import lib.kalu.permission.core.support.SupportPermissionForce;
-import lib.kalu.permission.core.support.SupportPermissionNormal;
-import lib.kalu.permission.core.wrapper.WrapperPermission;
-import lib.kalu.permission.core.wrapper.WrapperAbstract;
-import lib.kalu.permission.core.wrapper.WrapperBase;
+import lib.kalu.permission.core.support.SupportPermission;
 import lib.kalu.permission.core.wrapper.WrapperActivity;
 import lib.kalu.permission.core.wrapper.WrapperFragmentV4;
+import lib.kalu.permission.core.wrapper.WrapperImp;
 
 /**
  * description: 权限管理
@@ -22,107 +24,52 @@ import lib.kalu.permission.core.wrapper.WrapperFragmentV4;
  */
 public final class PermissionManager {
 
-    public static WrapperBase get(Activity activity) {
-        return new WrapperActivity(activity);
+    private static final Map<String, WrapperImp> map = Collections.synchronizedMap(new HashMap<String, WrapperImp>());
+    private static final WeakReference<Map<Activity, WrapperImp>> reference = new WeakReference(map);
+
+    public static WrapperImp get(Activity activity) {
+        final WrapperActivity wrapperImp = new WrapperActivity(activity);
+        map.put(activity.getClass().getSimpleName(), wrapperImp);
+        return wrapperImp;
     }
 
-    public static WrapperBase get(android.support.v4.app.Fragment fragment) {
-        return new WrapperFragmentV4(fragment);
+    public static WrapperImp get(android.support.v4.app.Fragment fragment) {
+        final WrapperFragmentV4 wrapperImp = new WrapperFragmentV4(fragment);
+        map.put(fragment.getActivity().getClass().getSimpleName(), wrapperImp);
+        return wrapperImp;
     }
 
     public static void onRequestPermissionsResult(Activity activity, int requestCode, @NonNull int[] grantResults) {
+        Log.e("Permission", "onRequestPermissionsResult ==> requestCode = " + requestCode + ", resultSize = " + grantResults.length);
 
         if (null == activity || null == grantResults || grantResults.length <= 0) return;
 
-        WrapperAbstract.Key key = new WrapperAbstract.Key(activity, requestCode);
-        if (null == key) return;
+        final String name = activity.getClass().getSimpleName();
+        if (TextUtils.isEmpty(name)) return;
 
-        final HashMap<WrapperAbstract.Key, WeakReference<WrapperPermission>> map = WrapperAbstract.getWrapperMap();
-        if (null == map) return;
+        final WrapperImp wrapperImp = reference.get().get(name);
+        if (null == wrapperImp) return;
 
-        final WeakReference<WrapperPermission> reference = map.get(key);
-        if (null == reference) return;
+        final ArrayList<String> list1 = new ArrayList<>();
+        final ArrayList<String> list2 = new ArrayList<>();
 
-        WrapperPermission wrapper = reference.get();
-        if (null == wrapper) return;
-
-        OnPermissionChangeListener listener = wrapper.getPermissionChangeListener();
-
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (wrapper.isForce()) {
-                if (null == listener) {
-                    SupportPermissionForce.succAnnotation(wrapper);
-                } else {
-                    SupportPermissionForce.succListener(wrapper);
-                }
+        final List<String> list3 = wrapperImp.getPermission();
+        for (int i = 0; i < list3.size(); i++) {
+            if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                list1.add(list3.get(i));
             } else {
-                if (null == listener) {
-                    SupportPermissionNormal.succAnnotation(wrapper);
-                } else {
-                    SupportPermissionNormal.succListener(wrapper);
-                }
-            }
-        } else {
-            if (null == listener) {
-                SupportPermissionNormal.failAnnotation(wrapper);
-            } else {
-                SupportPermissionNormal.failListener(wrapper);
+                list2.add(list3.get(i));
             }
         }
-    }
 
-    public static void onRequestPermissionsResult(android.support.v4.app.Fragment fragment, int requestCode, @NonNull int[] grantResults) {
-
-        if (null == fragment || null == grantResults || grantResults.length <= 0) return;
-
-        WrapperAbstract.Key key = new WrapperAbstract.Key(fragment, requestCode);
-        if (null == key) return;
-
-        final HashMap<WrapperAbstract.Key, WeakReference<WrapperPermission>> map = WrapperAbstract.getWrapperMap();
-        if (null == map) return;
-
-        final WeakReference<WrapperPermission> reference = map.get(key);
-        if (null == reference) return;
-
-        WrapperPermission wrapper = reference.get();
-        if (null == wrapper) return;
-
-        OnPermissionChangeListener listener = wrapper.getPermissionChangeListener();
-
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (wrapper.isForce()) {
-                if (null == listener) {
-                    SupportPermissionForce.succAnnotation(wrapper);
-                } else {
-                    SupportPermissionForce.succListener(wrapper);
-                }
-            } else {
-                if (null == listener) {
-                    SupportPermissionNormal.succAnnotation(wrapper);
-                } else {
-                    SupportPermissionNormal.succListener(wrapper);
-                }
-            }
-        } else {
-            if (null == listener) {
-                SupportPermissionNormal.failAnnotation(wrapper);
-            } else {
-                SupportPermissionNormal.failListener(wrapper);
-            }
+        if (list1.size() > 0) {
+            Log.e("Permission", "premissionSucc ==>" + list1.toString());
+            SupportPermission.premissionSucc(wrapperImp, list1);
         }
-    }
 
-    public static void requestPermission(Activity activity, String permission, int requestCode) {
-        new WrapperActivity(activity)
-                .setPermission(permission)
-                .setCode(requestCode)
-                .request();
-    }
-
-    public static void requestPermission(android.support.v4.app.Fragment fragment, String permission, int requestCode) {
-        new WrapperFragmentV4(fragment)
-                .setPermission(permission)
-                .setCode(requestCode)
-                .request();
+        if (list2.size() > 0) {
+            Log.e("Permission", "premissionFail ==>" + list2.toString());
+            SupportPermission.premissionFail(wrapperImp, list2);
+        }
     }
 }

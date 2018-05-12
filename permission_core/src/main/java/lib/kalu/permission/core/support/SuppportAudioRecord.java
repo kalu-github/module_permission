@@ -10,19 +10,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by joker on 2017/8/17.
+ * description: 录音
+ * created by kalu on 2018/5/12 15:41
  */
-
-public class SuppportAudioRecord {
+public final class SuppportAudioRecord {
     public File file;
     private AudioRecord mRecorder;
     private DataOutputStream dos;
     private Thread recordThread;
     private boolean isStart = false;
     private int bufferSize;
-    /**
-     * record thread
-     */
+
     Runnable recordRunnable = new Runnable() {
         @Override
         public void run() {
@@ -64,9 +62,6 @@ public class SuppportAudioRecord {
         return length > 0;
     }
 
-    /**
-     * destroy record thread
-     */
     private void destroyThread() {
         try {
             isStart = false;
@@ -86,9 +81,6 @@ public class SuppportAudioRecord {
         }
     }
 
-    /**
-     * start record thread
-     */
     private void startThread() {
         isStart = true;
         if (recordThread == null) {
@@ -97,11 +89,6 @@ public class SuppportAudioRecord {
         }
     }
 
-    /**
-     * save file
-     *
-     * @throws IOException
-     */
     private void setPath(String path) throws IOException {
         file = new File(path);
         deleteFile();
@@ -109,23 +96,11 @@ public class SuppportAudioRecord {
         dos = new DataOutputStream(new FileOutputStream(file, true));
     }
 
-    /**
-     * start record
-     *
-     * @param path
-     * @throws IOException
-     */
-    public void startRecord(String path) throws IOException, InterruptedException {
+    public void startRecord(String path) throws IOException {
         setPath(path);
         startThread();
     }
 
-    /**
-     * stop record
-     *
-     * @throws IOException
-     * @throws InterruptedException
-     */
     public void stopRecord() throws IOException, InterruptedException {
         // specially for PlatformOppo、PlatformMi、PlatformMeizu、PlatformHuawei and so on
         Thread.sleep(250);

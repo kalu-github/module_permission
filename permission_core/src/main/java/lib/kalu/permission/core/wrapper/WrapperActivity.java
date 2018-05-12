@@ -3,13 +3,14 @@ package lib.kalu.permission.core.wrapper;
 import android.app.Activity;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.util.Log;
 
-import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
+import lib.kalu.permission.core.support.SupportCheck;
 
-public final class WrapperActivity extends WrapperAbstract implements WrapperBase {
+public final class WrapperActivity extends WrapperAbstract {
 
     private final Activity activity;
 
@@ -17,61 +18,6 @@ public final class WrapperActivity extends WrapperAbstract implements WrapperBas
         this.activity = activity;
     }
 
-    @Override
-    public void requestSync() {
-        requestSync(activity);
-    }
-
-    @Override
-    void originalRequest() {
-        ActivityCompat.requestPermissions(getActivity(), new String[]{getRequestPermission()},
-                getRequestCode());
-    }
-
-    @Override
-    final void beginAnnotation() {
-        int requestCode = getRequestCode();
-
-        final Activity activity = getActivity();
-        if (null == activity) return;
-
-        final String requestPermission = getRequestPermission();
-        if (TextUtils.isEmpty(requestPermission)) return;
-
-        boolean ok = false;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            ok = activity.shouldShowRequestPermissionRationale(requestPermission);
-        }
-        if (ok) {
-
-            final String name = activity.getClass().getName();
-            if (TextUtils.isEmpty(name)) return;
-            Log.e("WrapperActivity", "beginAnnotation ==>  name = " + name);
-
-            final OnAnnotationChangeListener api = getAnnotationListener(name);
-            if (null == api) return;
-
-            api.onAgain(activity, requestCode);
-            ActivityCompat.requestPermissions(activity, new String[]{requestPermission}, requestCode);
-        } else {
-            ActivityCompat.requestPermissions(activity, new String[]{requestPermission}, requestCode);
-        }
-    }
-
-    @Override
-    final void beginListener() {
-
-        int requestCode = getRequestCode();
-
-        String requestPermission = getRequestPermission();
-        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, requestPermission)) {
-            OnPermissionChangeListener requestListener = getPermissionChangeListener();
-            if (requestListener != null) {
-                requestListener.onAgain(requestCode);
-            }
-        }
-        ActivityCompat.requestPermissions(activity, new String[]{requestPermission}, requestCode);
-    }
 
     @Override
     public String getClassName() {
@@ -90,6 +36,34 @@ public final class WrapperActivity extends WrapperAbstract implements WrapperBas
 
     @Override
     public int getTarget() {
-        return WrapperBase.TARGET_ACTIVITY;
+        return WrapperImp.TARGET_ACTIVITY;
+    }
+
+    @Override
+    public void request() {
+
+        final List<String> list1 = getPermission();
+        if (null == list1 || list1.size() == 0) return;
+
+        final int requestCode = getRequestCode();
+        final String[] names = new String[list1.size()];
+        final List<String> list2 = new ArrayList<>();
+
+        for (int i = 0; i < list1.size(); i++) {
+
+            final String name = list1.get(i);
+            names[i] = name;
+
+            if (SupportCheck.isAndroidM() && activity.shouldShowRequestPermissionRationale(name)) {
+                list2.add(name);
+            }
+        }
+
+        final OnPermissionChangeListener api1 = getPermissionChangeListener();
+        if (null != api1 && list2.size() > 0) {
+            api1.onAgain(requestCode, list2);
+        }
+
+        ActivityCompat.requestPermissions(activity, names, requestCode);
     }
 }

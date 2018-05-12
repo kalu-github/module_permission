@@ -12,6 +12,8 @@ import com.quasar.demo.R;
 import com.quasar.demo.frame.BaseActivity;
 import com.quasar.demo.module.comm_main.MainActivity;
 
+import java.util.List;
+
 import lib.kalu.permission.annotation.PermissionAgain;
 import lib.kalu.permission.annotation.PermissionDenied;
 import lib.kalu.permission.annotation.PermissionFail;
@@ -38,32 +40,40 @@ public class SplashActivity extends BaseActivity implements SplashView {
 
     @Override
     public void initDataLocal() {
-        requestPermission();
+
+//        goThenKill(MainActivity.class);
+
+        PermissionManager.get(SplashActivity.this)
+                .setForce(true)
+                .setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .setPageType(IntentType.SYSTEM_SETTING)
+                .setRequestCode(BaseConstant.PERMISSION_SD)
+                .request();
     }
 
     @PermissionSucc(BaseConstant.PERMISSION_SD)
-    public void cardSucc(int code) {
+    public void onSucc(int code, List<String> list) {
         goThenKill(MainActivity.class);
-        Log.e("dsds", "onSucc ==> code = " + code);
-        Toast.makeText(getApplicationContext(), "获取录音权限成功", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onSucc ==> code = " + code + ", list = " + list.toString());
+        Toast.makeText(getApplicationContext(), "获取存储权限成功", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionFail(BaseConstant.PERMISSION_SD)
-    public void cardFail(int code) {
-        Toast.makeText(getApplicationContext(), "获取录音权限失败", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onFail ==> code = " + code);
+    public void onFail(int code, List<String> list) {
+        Toast.makeText(getApplicationContext(), "获取存储权限失败", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onFail ==> code = " + code + ", list = " + list.toString());
     }
 
     @PermissionAgain(BaseConstant.PERMISSION_SD)
-    public void cardAgainNormal(int code) {
-        Toast.makeText(getApplicationContext(), "获取录音权限, 弹窗", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onAgain ==> code = " + code);
+    public void onAgain(int code, List<String> list) {
+        Toast.makeText(getApplicationContext(), "获取存储权限, 弹窗", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onAgain ==> code = " + code + ", list = " + list.toString());
     }
 
     @PermissionDenied(BaseConstant.PERMISSION_SD)
-    public void cardAgainRefuse(int code, final Intent intent) {
-        Toast.makeText(getApplicationContext(), "获取录音权限, 拒绝", Toast.LENGTH_SHORT).show();
-        Log.e("dsds", "onDenied ==> code = " + code);
+    public void onDenied(int code, List<String> list, final Intent intent) {
+        Toast.makeText(getApplicationContext(), "获取存储权限, 拒绝", Toast.LENGTH_SHORT).show();
+        Log.e("dsds", "onDenied ==> code = " + code + ", list = " + list.toString() + ", action = " + intent.getAction());
     }
 
     @Override
@@ -74,16 +84,5 @@ public class SplashActivity extends BaseActivity implements SplashView {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         PermissionManager.onRequestPermissionsResult(SplashActivity.this, requestCode, grantResults);
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
-    public void requestPermission() {
-        PermissionManager.get(SplashActivity.this)
-                .setForce(true)
-                .setUnderM(true)
-                .setPermission(Manifest.permission.RECORD_AUDIO)
-                .setPageType(IntentType.PLATFRRM_SETTING)
-                .setCode(BaseConstant.PERMISSION_SD)
-                .request();
     }
 }

@@ -1,11 +1,23 @@
 package lib.kalu.permission.core.wrapper;
 
-public interface WrapperPermission extends WrapperBase {
-    String getRequestPermission();
+public class WrapperPermission {
 
-    int getRequestCode();
+    private boolean pass;
+    private String name;
 
-    WrapperBase requestPermission(String permission);
+    public boolean isPass() {
+        return pass;
+    }
 
-    WrapperBase requestCode(int code);
+    public void setPass(boolean pass) {
+        this.pass = pass;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

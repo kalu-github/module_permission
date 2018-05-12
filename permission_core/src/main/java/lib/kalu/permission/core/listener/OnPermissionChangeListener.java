@@ -2,13 +2,15 @@ package lib.kalu.permission.core.listener;
 
 import android.content.Intent;
 
+import java.util.List;
+
 public interface OnPermissionChangeListener {
 
-    void onSucc(int code);
+    void onSucc(int requestCode, List<String> list);
 
-    void onFail(int code);
+    void onFail(int requestCode, List<String> list);
 
-    void onAgain(int code);
+    void onAgain(int requestCode, List<String> list);
 
-    void onDenied(int code, Intent intent);
+    void onDenied(int requestCode, List<String> list, Intent settingIntent);
 }

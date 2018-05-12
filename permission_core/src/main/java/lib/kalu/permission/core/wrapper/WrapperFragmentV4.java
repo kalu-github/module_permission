@@ -2,70 +2,18 @@ package lib.kalu.permission.core.wrapper;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 
-import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
+import java.util.ArrayList;
+import java.util.List;
+
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 
-public final class WrapperFragmentV4 extends WrapperAbstract implements WrapperBase {
+public final class WrapperFragmentV4 extends WrapperAbstract {
 
     private final android.support.v4.app.Fragment mFragment;
 
     public WrapperFragmentV4(android.support.v4.app.Fragment fragmentV4) {
         this.mFragment = fragmentV4;
-    }
-
-    @Override
-    void originalRequest() {
-        String permission = getRequestPermission();
-        int code = getRequestCode();
-        mFragment.requestPermissions(new String[]{permission}, code);
-    }
-
-    @Override
-    final void beginAnnotation() {
-
-        final String name = mFragment.getClass().getName();
-        // Log.e("WrapperFragmentV4", "beginAnnotation ==>  name = "+name);
-
-        if (TextUtils.isEmpty(name)) return;
-
-        final int requestCode = getRequestCode();
-        final String requestPermission = getRequestPermission();
-        if (TextUtils.isEmpty(requestPermission)) return;
-
-        final boolean result = mFragment.shouldShowRequestPermissionRationale(requestPermission);
-        if (result) {
-
-            final OnAnnotationChangeListener api = getAnnotationListener(name);
-            if (null == api) return;
-
-            api.onAgain(mFragment, requestCode);
-            originalRequest();
-        } else {
-            originalRequest();
-        }
-    }
-
-    @Override
-    final void beginListener() {
-
-        int requestCode = getRequestCode();
-        String requestPermission = getRequestPermission();
-        OnPermissionChangeListener requestListener = getPermissionChangeListener();
-
-        if (mFragment.shouldShowRequestPermissionRationale
-                (requestPermission)) {
-            requestListener.onAgain(requestCode);
-            originalRequest();
-        } else {
-            originalRequest();
-        }
-    }
-
-    @Override
-    public void requestSync() {
-        requestSync(mFragment);
     }
 
     @Override
@@ -85,6 +33,35 @@ public final class WrapperFragmentV4 extends WrapperAbstract implements WrapperB
 
     @Override
     public int getTarget() {
-        return WrapperBase.TARGET_FRAGMENT;
+        return WrapperImp.TARGET_FRAGMENT;
+    }
+
+    @Override
+    public void request() {
+
+        final List<String> list1 = getPermission();
+        if (null == list1 || list1.size() == 0) return;
+
+        final int requestCode = getRequestCode();
+        final String[] names = new String[list1.size()];
+        final List<String> list2 = new ArrayList<>();
+
+        for (int i = 0; i < list1.size(); i++) {
+
+            final String name = list1.get(i);
+            names[i] = name;
+
+            final boolean again = mFragment.shouldShowRequestPermissionRationale(name);
+            if (again) {
+                list2.add(name);
+            }
+        }
+
+        final OnPermissionChangeListener api1 = getPermissionChangeListener();
+        if (null != api1 && list2.size() > 0) {
+            api1.onAgain(requestCode, list2);
+        }
+
+        mFragment.requestPermissions(names, requestCode);
     }
 }

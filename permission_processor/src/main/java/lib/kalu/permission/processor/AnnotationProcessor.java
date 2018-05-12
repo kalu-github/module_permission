@@ -23,7 +23,10 @@ import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic;
 import javax.tools.JavaFileObject;
 
-import lib.kalu.permission.annotation.*;
+import lib.kalu.permission.annotation.PermissionAgain;
+import lib.kalu.permission.annotation.PermissionDenied;
+import lib.kalu.permission.annotation.PermissionFail;
+import lib.kalu.permission.annotation.PermissionSucc;
 
 /**
  * description: 注解拦截处理, compile 'com.google.auto.service:auto-service:1.0-rc4'
@@ -48,11 +51,11 @@ public final class AnnotationProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         map.clear();
-        if (!isAnnotatedWithClass(roundEnv, PermissionMulitSync.class)) return false;
-        if (!isAnnotatedWithMethod(roundEnv, PermissionDenied.class)) return false;
-        if (!isAnnotatedWithMethod(roundEnv, PermissionSucc.class)) return false;
-        if (!isAnnotatedWithMethod(roundEnv, PermissionFail.class)) return false;
-        if (!isAnnotatedWithMethod(roundEnv, PermissionAgain.class)) return false;
+
+        if (!parseMethod(roundEnv, PermissionDenied.class)) return false;
+        if (!parseMethod(roundEnv, PermissionSucc.class)) return false;
+        if (!parseMethod(roundEnv, PermissionFail.class)) return false;
+        if (!parseMethod(roundEnv, PermissionAgain.class)) return false;
 
         Writer writer = null;
         for (AnnotationGenerate info : map.values()) {
@@ -83,7 +86,6 @@ public final class AnnotationProcessor extends AbstractProcessor {
         set.add(PermissionSucc.class.getCanonicalName());
         set.add(PermissionFail.class.getCanonicalName());
         set.add(PermissionAgain.class.getCanonicalName());
-        set.add(PermissionMulitSync.class.getCanonicalName());
         set.add(PermissionDenied.class.getName());
 
         return set;
@@ -94,41 +96,7 @@ public final class AnnotationProcessor extends AbstractProcessor {
         return SourceVersion.latestSupported();
     }
 
-    /**********************************************************************************************/
-
-    private boolean isAnnotatedWithClass(RoundEnvironment roundEnv, Class<? extends Annotation> clazz) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(clazz);
-        for (Element element : elements) {
-            if (isValid(element)) {
-                return false;
-            }
-            TypeElement typeElement = (TypeElement) element;
-            String typeName = typeElement.getQualifiedName().toString();
-            AnnotationGenerate info = map.get(typeName);
-            if (info == null) {
-                info = new AnnotationGenerate(mElements, typeElement);
-                map.put(typeName, info);
-            }
-
-            Annotation annotation = element.getAnnotation(clazz);
-            if (annotation instanceof PermissionMulitSync) {
-                String[] permissions = ((PermissionMulitSync) annotation).permission();
-                int[] value = ((PermissionMulitSync) annotation).value();
-                if (permissions.length != value.length) {
-                    error(element, "permissions's length not equals value's length");
-                    return false;
-                }
-                info.syncPermissions.put(value, permissions);
-            } else {
-                error(element, "%s not support.", element);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isAnnotatedWithMethod(RoundEnvironment roundEnv, Class<? extends Annotation> clazz) {
+    private boolean parseMethod(RoundEnvironment roundEnv, Class<? extends Annotation> clazz) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(clazz);
         for (Element element : elements) {
             if (isValid(element)) {
@@ -143,37 +111,37 @@ public final class AnnotationProcessor extends AbstractProcessor {
                 map.put(typeName, info);
             }
 
-            int size = method.getParameters().size();
+            final int params = method.getParameters().size();
             Annotation annotation = method.getAnnotation(clazz);
             String methodName = method.getSimpleName().toString();
             if (annotation instanceof PermissionSucc) {
-                int[] value = ((PermissionSucc) annotation).value();
-                if (value.length > 1 || size == 1) {
-                    info.grantedMap.put(methodName, value);
-                } else {
-                    info.singleGrantMap.put(value[0], methodName);
-                }
+                PermissionSucc succ = (PermissionSucc) annotation;
+                final PermissionModel model = new PermissionModel();
+                final int code = succ.value();
+                model.setCode(code);
+                model.setMethod(methodName);
+                info.succ[0] = model;
             } else if (annotation instanceof PermissionFail) {
-                int[] value = ((PermissionFail) annotation).value();
-                if (value.length > 1 || size == 1) {
-                    info.deniedMap.put(methodName, value);
-                } else {
-                    info.singleDeniedMap.put(value[0], methodName);
-                }
+                PermissionFail fail = (PermissionFail) annotation;
+                final PermissionModel model = new PermissionModel();
+                final int code = fail.value();
+                model.setCode(code);
+                model.setMethod(methodName);
+                info.fail[0] = model;
             } else if (annotation instanceof PermissionAgain) {
-                int[] value = ((PermissionAgain) annotation).value();
-                if (value.length > 1 || size == 1) {
-                    info.rationaleMap.put(methodName, value);
-                } else {
-                    info.singleRationaleMap.put(value[0], methodName);
-                }
-            }else if (annotation instanceof PermissionDenied) {
-                int[] value = ((PermissionDenied) annotation).value();
-                if (value.length > 1 || size == 2) {
-                    info.nonRationaleMap.put(methodName, value);
-                } else {
-                    info.singleNonRationaleMap.put(value[0], methodName);
-                }
+                PermissionAgain again = (PermissionAgain) annotation;
+                final PermissionModel model = new PermissionModel();
+                final int code = again.value();
+                model.setCode(code);
+                model.setMethod(methodName);
+                info.again[0] = model;
+            } else if (annotation instanceof PermissionDenied) {
+                PermissionDenied denied = (PermissionDenied) annotation;
+                final PermissionModel model = new PermissionModel();
+                final int code = denied.value();
+                model.setCode(code);
+                model.setMethod(methodName);
+                info.denied[0] = model;
             } else {
                 error(method, "%s not support.", method);
                 return false;

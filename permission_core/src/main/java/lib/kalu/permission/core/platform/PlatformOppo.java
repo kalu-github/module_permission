@@ -14,20 +14,22 @@ import android.content.Intent;
  * Created by joker on 2017/8/4.
  */
 
-public class PlatformOppo  extends PlatformGoogle {
+public class PlatformOppo implements PlatformImp {
     private final String PKG = "com.coloros.safecenter";
     private final String MANAGER_OUT_CLS = "com.coloros.safecenter.permission.singlepage" +
             ".PermissionSinglePageActivity";
 
+    final Activity activity;
+
     public PlatformOppo(Activity activity) {
-        super(activity);
+        this.activity = activity;
     }
 
     @Override
     public Intent settingIntent() {
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(PACK_TAG, activity.getPackageName());
+        intent.putExtra(PACKAGE, activity.getPackageName());
         ComponentName comp;
         comp = new ComponentName(PKG, MANAGER_OUT_CLS);
         // do not work!!

@@ -18,21 +18,23 @@ import android.content.pm.PackageManager;
  * Created by joker on 2017/8/4.
  */
 
-public class PlatformHuawei extends PlatformGoogle {
+public class PlatformHuawei  implements PlatformImp {
     private final String PKG = "com.huawei.systemmanager";
     private final String MANAGER_OUT_CLS = "com.huawei.permissionmanager.ui.MainActivity";
 //    private final String SINGLE_CLS = "com.huawei.permissionmanager.ui.SingleAppActivity";
 //    private final String SINGLE_TAG = "SingleAppActivity";
 
+    final Activity activity;
+
     public PlatformHuawei(Activity activity) {
-        super(activity);
+        this.activity = activity;
     }
 
     @Override
     public Intent settingIntent() throws ActivityNotFoundException {
         Intent intent = new PlatformGoogle(activity).settingIntent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(PACK_TAG, activity.getPackageName());
+        intent.putExtra(PACKAGE, activity.getPackageName());
         ComponentName comp = null;
         try {
             PackageInfo pi = activity.getPackageManager().getPackageInfo(PKG,

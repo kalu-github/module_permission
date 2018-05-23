@@ -1,16 +1,11 @@
  ![](https://img.shields.io/badge/Build-Passing-green.svg) ![](https://img.shields.io/badge/API%20-14+-green.svg) [ ![](https://img.shields.io/badge/%E4%BD%9C%E8%80%85-%E5%BC%A0%E8%88%AA-red.svg) ](http://www.jianshu.com/u/22a5d2ee8385) ![](https://img.shields.io/badge/%E9%82%AE%E7%AE%B1-153437803@qq.com-red.svg)
-
-android 6.0 运行时权限管理, 
-编译时注解, 普通监听回调
-
 ![image](https://github.com/153437803/PermissionManager/blob/master/image_20180510214150.gif ) 
-
 ```
 关于国产机型5.0-6.0之间, 动态权限适配的核心思想
 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
-
-####普通回调监听方式
+#
+# 1.普通回调监听方式
 ```
 PermissionManager.get(HomeFragment.this)
                  .setForce(true)
@@ -50,9 +45,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 }
 ```
-
-
-####编译时注解方式:
+#
+# 2.编译时注解方式
 ```
 PermissionManager.get(SplashActivity.this)
                  .setForce(true)

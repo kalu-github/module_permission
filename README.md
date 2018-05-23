@@ -5,7 +5,15 @@ android 6.0 运行时权限管理,
 
 ![image](https://github.com/153437803/PermissionManager/blob/master/image_20180510214150.gif ) 
 
-<table><tr><td bgcolor=#FF4500><font color=#0099ff size=7 face="黑体">国产6.0以下机型的运行时权限, 就是主动触发操作，try-catch获取异常</font></td></tr></table>
+```
+简介说明,本项目可以干什么
+
+1. 普通回调监听
+
+2. 编译注解监听
+
+3.关于国产机型5.0-6.0之间, 动态权限适配的核心思想
+  ==> 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 
 ```
 1.普通回调监听方式：

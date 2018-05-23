@@ -6,18 +6,12 @@ android 6.0 运行时权限管理,
 ![image](https://github.com/153437803/PermissionManager/blob/master/image_20180510214150.gif ) 
 
 ```
-简介说明,本项目可以干什么
-
-1. 普通回调监听
-
-2. 编译注解监听
-
-3.关于国产机型5.0-6.0之间, 动态权限适配的核心思想
-  ==> 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
+关于国产机型5.0-6.0之间, 动态权限适配的核心思想
+就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
 
+####普通回调监听方式
 ```
-1.普通回调监听方式：
 PermissionManager.get(HomeFragment.this)
                  .setForce(true)
                  .setPermissionName(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
@@ -57,9 +51,9 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 }
 ```
 
-```
-2.编译时注解方式:
 
+####编译时注解方式:
+```
 PermissionManager.get(SplashActivity.this)
                  .setForce(true)
                  .setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)

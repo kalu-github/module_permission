@@ -9,13 +9,29 @@
 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
 #
-## 普通回调监听方式
+## 回调参数说明
 ```
-回调参数说明：
+基本：
 
 code：请求码
 List<String> list：请求的权限名字集合
+
+普通回调监听方式：
+
+onSucc(int code, List<String> list)： 成功
+onFail(int code, List<String> list)： 失败
+onAgain(int code, List<String> list)： 系统确认框
+onDenied(int code, List<String> list)： 拒绝
+
+编译时注解方式：
+
+@PermissionSucc(code)： 成功
+@PermissionFail(code)： 失败
+@PermissionAgain(code)： 系统确认框
+@PermissionDenied(code)： 拒绝
 ```
+#
+## 普通回调监听方式
 ```
 基本用法：
 
@@ -58,12 +74,6 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 ```
 #
 ## 编译时注解方式
-```
-回调参数说明：
-
-code：请求码
-List<String> list：请求的权限名字集合
-```
 ```
 基本用法：
 

@@ -3,13 +3,13 @@
 ![image](https://github.com/153437803/PermissionManager/blob/master/image_20180510214150.gif ) 
 
 #
-# 国产机型权限适配
+## 国产机型权限适配
 ```
 关于国产机型5.0-6.0之间, 动态权限适配的核心思想
 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
 #
-# 1.普通回调监听方式
+# 普通回调监听方式
 ```
 回调参数说明：
 
@@ -57,7 +57,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 }
 ```
 #
-# 2.编译时注解方式
+# 编译时注解方式
 ```
 回调参数说明：
 

@@ -126,10 +126,9 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 # Proguard-Rules
 ```
--keep class lib.kalu.adapter.** {
+-keep class lib.kalu.permission.* {
 *;
 }
--keep public class * extends lib.kalu.adapter.BaseCommonAdapter
 ```
 
 #

@@ -9,7 +9,6 @@
 # 1.普通回调监听方式
 ```
 PermissionManager.get(HomeFragment.this)
-                 .setForce(true)
                  .setPermissionName(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                  .setRequestCode(BaseConstant.PERMISSION_CAMERA)
                  .setPageType(IntentType.GOOGLE_SETTING)
@@ -50,7 +49,6 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 # 2.编译时注解方式
 ```
 PermissionManager.get(SplashActivity.this)
-                 .setForce(true)
                  .setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                  .setPageType(IntentType.SYSTEM_SETTING)
                  .setRequestCode(BaseConstant.PERMISSION_SD)

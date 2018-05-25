@@ -8,6 +8,11 @@
 #
 # 1.普通回调监听方式
 ```
+回调参数说明：
+code：请求码
+List<String> list：请求的权限名字集合
+```
+```
 PermissionManager.get(HomeFragment.this)
                  .setPermissionName(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
                  .setRequestCode(code)
@@ -47,6 +52,11 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 ```
 #
 # 2.编译时注解方式
+```
+回调参数说明：
+code：请求码
+List<String> list：请求的权限名字集合
+```
 ```
 PermissionManager.get(SplashActivity.this)
                  .setPermissionName(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)

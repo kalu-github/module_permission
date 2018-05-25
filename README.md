@@ -10,7 +10,7 @@
 ```
 PermissionManager.get(HomeFragment.this)
                  .setPermissionName(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
-                 .setRequestCode(BaseConstant.PERMISSION_CAMERA)
+                 .setRequestCode(code)
                  .setPageType(IntentType.GOOGLE_SETTING)
                  .setOnPermissionChangeListener(new OnPermissionChangeListener() {
                         @Override
@@ -54,26 +54,26 @@ PermissionManager.get(SplashActivity.this)
                  .setRequestCode(BaseConstant.PERMISSION_SD)
                  .request();
                  
-@PermissionSucc(BaseConstant.PERMISSION_SD)
+@PermissionSucc(code)
 public void onSucc(int code, List<String> list) {
     goThenKill(MainActivity.class);
     Log.e("dsds", "onSucc ==> code = " + code + ", list = " + list.toString());
     Toast.makeText(getApplicationContext(), "获取存储权限成功", Toast.LENGTH_SHORT).show();
 }
 
-@PermissionFail(BaseConstant.PERMISSION_SD)
+@PermissionFail(code)
 public void onFail(int code, List<String> list) {
     Toast.makeText(getApplicationContext(), "获取存储权限失败", Toast.LENGTH_SHORT).show();
     Log.e("dsds", "onFail ==> code = " + code + ", list = " + list.toString());
 }
 
-@PermissionAgain(BaseConstant.PERMISSION_SD)
+@PermissionAgain(code)
 public void onAgain(int code, List<String> list) {
     Toast.makeText(getApplicationContext(), "获取存储权限, 弹窗", Toast.LENGTH_SHORT).show();
     Log.e("dsds", "onAgain ==> code = " + code + ", list = " + list.toString());
 }
 
-@PermissionDenied(BaseConstant.PERMISSION_SD)
+@PermissionDenied(code)
 public void onDenied(int code, List<String> list, final Intent intent) {
     Toast.makeText(getApplicationContext(), "获取存储权限, 拒绝", Toast.LENGTH_SHORT).show();
     Log.e("dsds", "onDenied ==> code = " + code + ", list = " + list.toString() + ", action = " + intent.getAction());

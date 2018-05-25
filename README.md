@@ -9,7 +9,7 @@
 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
 #
-# 普通回调监听方式
+## 普通回调监听方式
 ```
 回调参数说明：
 
@@ -57,7 +57,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 }
 ```
 #
-# 编译时注解方式
+## 编译时注解方式
 ```
 回调参数说明：
 

@@ -11,7 +11,6 @@
 #
 ## 依赖方式
 ```
-```
 dependencies {
     implementation project(':permission_core')
     implementation project(':permission_annotation')

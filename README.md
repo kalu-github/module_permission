@@ -9,6 +9,16 @@
 就是主动触发操作, 迫使软件崩溃, catch异常信息, 之后就是回传相应的状态, 就是这么的简单
 ```
 #
+## 依赖方式
+```
+```
+dependencies {
+    implementation project(':permission_core')
+    implementation project(':permission_annotation')
+    annotationProcessor project(':permission_processor')
+}
+```
+#
 ## 回调参数说明
 ```
 ----------------------------------------------------------------------------------

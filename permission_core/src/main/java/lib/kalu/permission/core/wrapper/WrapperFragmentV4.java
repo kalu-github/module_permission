@@ -1,13 +1,16 @@
 package lib.kalu.permission.core.wrapper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
+import lib.kalu.permission.core.support.SupportCheck;
 
 /**
  * description: 当前类描述信息
@@ -44,34 +47,56 @@ public final class WrapperFragmentV4 extends WrapperAbstract {
     @Override
     public void request() {
 
-        final List<String> list1 = getPermission();
-        if (null == list1 || list1.size() == 0) return;
+        final List<String> requestList = getPermission();
+        if (null == requestList || requestList.isEmpty()) return;
 
         final int requestCode = getRequestCode();
-        final String[] names = new String[list1.size()];
-        final List<String> list2 = new ArrayList<>();
+        final Context context = getActivity().getApplicationContext();
 
-        for (int i = 0; i < list1.size(); i++) {
-
-            final String name = list1.get(i);
-            names[i] = name;
-
-            final boolean again = mFragment.shouldShowRequestPermissionRationale(name);
-            if (again) {
-                list2.add(name);
+        // 5.0
+        if (SupportCheck.isUnderBuildL(context)) {
+            Log.e("Permission", "fragment(不需要处理权限问题) ==> " + SupportCheck.getBuildVersion(context) + ", " + SupportCheck.getSystemVersion());
+            final OnPermissionChangeListener api1 = getPermissionChangeListener();
+            if (null != api1) {
+                api1.onSucc(requestCode, requestList);
+            } else {
+                final OnAnnotationChangeListener api2 = getAnnotationChangeListener(getClassName());
+                if (null != api2) {
+                    api2.onSucc(getFragment(), requestCode, requestList);
+                } else {
+                    api2.onFail(getFragment(), requestCode, requestList);
+                }
             }
         }
-
-        final OnPermissionChangeListener api1 = getPermissionChangeListener();
-        if (null != api1 && list2.size() > 0) {
-            api1.onAgain(requestCode, list2);
+        // 5.0-6.0
+        else if (SupportCheck.isUnderBuildM(context)) {
+            Log.e("Permission", "fragment(需要处理国产机型权限问题) ==> " + SupportCheck.getBuildVersion(context) + ", " + SupportCheck.getSystemVersion());
         }
+        // 6.0
+        else {
+            Log.e("Permission", "fragment(需要处理型权限问题) ==> " + SupportCheck.getBuildVersion(context) + ", " + SupportCheck.getSystemVersion());
+            final ArrayList<String> againList = new ArrayList<>();
+            for (String name : requestList) {
+                if (getFragment().shouldShowRequestPermissionRationale(name)) {
+                    againList.add(name);
+                }
+            }
 
-        final OnAnnotationChangeListener api2 = getAnnotationChangeListener(getClassName());
-        if (null != api2 && list2.size() > 0) {
-            api2.onAgain(getFragment(), requestCode, list2);
+            if (!againList.isEmpty()) {
+                final OnPermissionChangeListener api1 = getPermissionChangeListener();
+                if (null != api1) {
+                    api1.onAgain(requestCode, requestList);
+                } else {
+                    final OnAnnotationChangeListener api2 = getAnnotationChangeListener(getClassName());
+                    if (null != api2) {
+                        api2.onAgain(getFragment(), requestCode, requestList);
+                    }
+                }
+            }
+
+            if (requestList.isEmpty()) return;
+            final String[] strings = requestList.toArray(new String[requestList.size()]);
+            getFragment().requestPermissions(strings, requestCode);
         }
-
-        mFragment.requestPermissions(names, requestCode);
     }
 }

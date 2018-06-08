@@ -52,12 +52,28 @@ public final class SupportCheck {
     private static final String TAG_NUMBER = "1";
     private static boolean granted = false;
 
-    public final static boolean isAndroidM() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    public final static boolean isUnderBuildM(Context context) {
+        return context.getApplicationInfo().targetSdkVersion < Build.VERSION_CODES.M;
     }
 
-    public final static boolean isAndroidL() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.M;
+    public final static boolean isUnderAndroidM() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
+    }
+
+    public final static boolean isUnderBuildL(Context context) {
+        return context.getApplicationInfo().targetSdkVersion < Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public final static boolean isUnderAndroidL() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public final static String getSystemVersion() {
+        return "系统版本：" + Build.VERSION.SDK_INT + "(" + Build.VERSION.RELEASE + ")";
+    }
+
+    public final static String getBuildVersion(Context context) {
+        return "编译版本：" + context.getApplicationInfo().targetSdkVersion;
     }
 
     final static boolean isDenied(WrapperImp wrapper, String permissionName) {

@@ -10,14 +10,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * support:
- * 1.hongmi 5X android:6.0.1/miui 8.2
- * <p>
- * manager home page, or {@link PlatformGoogle#settingIntent()}
- * <p>
- * Created by joker on 2017/8/4.
+ * description: mi
+ * created by kalu on 2018/6/8 8:56
  */
-
 public class PlatformMi implements PlatformImp {
     private final String PKG = "com.miui.securitycenter";
     // manager

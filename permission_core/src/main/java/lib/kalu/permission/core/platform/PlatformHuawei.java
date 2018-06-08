@@ -9,15 +9,9 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 /**
- * support:
- * 1.mate7 android:6.0/emui 4.0.1
- * 2.畅享7 android:7.0/emui 5.1
- * <p>
- * manager permissions page, permissions manage page, or {@link PlatformGoogle#settingIntent()}
- * <p>
- * Created by joker on 2017/8/4.
+ * description: huawei
+ * created by kalu on 2018/6/8 8:55
  */
-
 public class PlatformHuawei  implements PlatformImp {
     private final String PKG = "com.huawei.systemmanager";
     private final String MANAGER_OUT_CLS = "com.huawei.permissionmanager.ui.MainActivity";

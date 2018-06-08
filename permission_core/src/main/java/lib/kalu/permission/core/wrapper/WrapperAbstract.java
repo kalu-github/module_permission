@@ -5,7 +5,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import lib.kalu.permission.core.intent.IntentType;
 import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;

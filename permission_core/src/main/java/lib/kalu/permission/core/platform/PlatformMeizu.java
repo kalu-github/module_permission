@@ -7,9 +7,9 @@ import android.content.Intent;
 import lib.kalu.permission.core.support.SupportCheck;
 
 /**
- * Created by joker on 2017/8/24.
+ * description: meizu
+ * created by kalu on 2018/6/8 8:56
  */
-
 public class PlatformMeizu implements PlatformImp {
 
     private final String N_MANAGER_OUT_CLS = "com.meizu.safe.permission.PermissionMainActivity";

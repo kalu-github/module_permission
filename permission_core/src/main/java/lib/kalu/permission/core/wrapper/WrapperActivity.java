@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;
 import lib.kalu.permission.core.support.SupportCheck;
 
@@ -68,9 +68,9 @@ public final class WrapperActivity extends WrapperAbstract {
             api1.onAgain(requestCode, list2);
         }
 
-        final OnPermissionChangeListener api2= getPermissionChangeListener();
+        final OnAnnotationChangeListener api2 = getAnnotationChangeListener(getClassName());
         if (null != api2 && list2.size() > 0) {
-            api2.onAgain(requestCode, list2);
+            api2.onAgain(getActivity(), requestCode, list2);
         }
 
         ActivityCompat.requestPermissions(activity, names, requestCode);

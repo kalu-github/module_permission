@@ -22,11 +22,7 @@ buildscript {
     }
 
     dependencies {
-
         classpath "com.android.tools.build:gradle:$support_gradle_version"
-        classpath "org.greenrobot:greendao-gradle-plugin:$support_greendao_version"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$support_kotlin_version"
-
     }
 }
 

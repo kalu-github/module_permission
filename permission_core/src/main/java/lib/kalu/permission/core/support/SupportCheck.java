@@ -29,9 +29,7 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-
 import lib.kalu.permission.core.platform.PlatformManager;
 import lib.kalu.permission.core.wrapper.WrapperImp;
 

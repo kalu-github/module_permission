@@ -40,7 +40,7 @@ public final class PermissionManager {
     }
 
     public static void onRequestPermissionsResult(Activity activity, int requestCode, @NonNull int[] grantResults) {
-        Log.e("Permission", "onRequestPermissionsResult ==> requestCode = " + requestCode + ", resultSize = " + grantResults.length);
+        Log.e("Permission", "onRequestPermissionsResult ==> requestCode = " + requestCode + ", permissionSize = " + grantResults.length);
 
         if (null == activity || null == grantResults || grantResults.length <= 0) return;
 
@@ -50,26 +50,24 @@ public final class PermissionManager {
         final WrapperImp wrapperImp = reference.get().get(name);
         if (null == wrapperImp) return;
 
-        final ArrayList<String> list1 = new ArrayList<>();
-        final ArrayList<String> list2 = new ArrayList<>();
+        final ArrayList<String> succList = new ArrayList<>();
+        final ArrayList<String> failList = new ArrayList<>();
+        final List<String> sumList = wrapperImp.getPermission();
 
-        final List<String> list3 = wrapperImp.getPermission();
-        for (int i = 0; i < list3.size(); i++) {
+        for (int i = 0; i < sumList.size(); i++) {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                list1.add(list3.get(i));
+                succList.add(sumList.get(i));
             } else {
-                list2.add(list3.get(i));
+                failList.add(sumList.get(i));
             }
         }
 
-        if (list1.size() > 0) {
-            Log.e("Permission", "premissionSucc ==>" + list1.toString());
-            SupportPermission.premissionSucc(wrapperImp, list1);
+        if (succList.size() > 0) {
+            SupportPermission.premissionSucc(wrapperImp, succList);
         }
 
-        if (list2.size() > 0) {
-            Log.e("Permission", "premissionFail ==>" + list2.toString());
-            SupportPermission.premissionFail(wrapperImp, list2);
+        if (failList.size() > 0) {
+            SupportPermission.premissionFail(wrapperImp, failList);
         }
     }
 }

@@ -5,15 +5,9 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 /**
- * support:
- * 1. oppo a57 android 6.0.1/coloros3.0
- * <p>
- * manager home page, permissions manage page does not work!!!, or
- * {@link PlatformGoogle#settingIntent()}
- * <p>
- * Created by joker on 2017/8/4.
+ * description: oppo
+ * created by kalu on 2018/6/8 8:56
  */
-
 public class PlatformOppo implements PlatformImp {
     private final String PKG = "com.coloros.safecenter";
     private final String MANAGER_OUT_CLS = "com.coloros.safecenter.permission.singlepage" +

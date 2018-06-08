@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 
 import java.util.List;
-import java.util.Map;
-
 import lib.kalu.permission.core.intent.IntentType;
 import lib.kalu.permission.core.listener.OnAnnotationChangeListener;
 import lib.kalu.permission.core.listener.OnPermissionChangeListener;

@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.provider.Settings;
 
 /**
- * description: android原生权限设置页面
- * created by kalu on 2017/12/19 22:33
+ * description: google
+ * created by kalu on 2018/6/8 8:55
  */
 public final class PlatformGoogle implements PlatformImp {
     final Activity activity;

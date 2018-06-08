@@ -5,15 +5,9 @@ import android.content.ComponentName;
 import android.content.Intent;
 
 /**
- * support:
- * 1.Y55A androi:6.0.1/Funtouch 2.6
- * 2.Xplay5A android: 5.1.1/Funtouch 3
- * <p>
- * manager home page, or {@link PlatformGoogle#settingIntent()}
- * <p>
- * Created by joker on 2017/8/4.
+ * description: vivo
+ * created by kalu on 2018/6/8 8:56
  */
-
 public class PlatformVivo implements PlatformImp {
     private final String MAIN_CLS = "com.iqoo.secure.MainActivity";
     private final String PKG = "com.iqoo.secure";

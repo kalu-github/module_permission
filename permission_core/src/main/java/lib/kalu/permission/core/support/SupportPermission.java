@@ -46,7 +46,6 @@ public final class SupportPermission {
 
         for (String name : list) {
 
-            Log.e("Permission", "premissionFail ==> 监听");
             if (SupportCheck.isDenied(wrapper, name)) {
                 deniedList.add(name);
             } else {
